@@ -1,0 +1,18 @@
+{
+  "name": "html-feed-spider",
+  "version": "0.0.1",
+  "description": "html-rss-spider",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "spider"
+  ],
+  "author": "happen-zhang",
+  "dependencies": {
+    "express": "3.4.0",
+    "ejs": "0.8.4"
+  },
+  "license": "MIT"
+}
