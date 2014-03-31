@@ -12,7 +12,10 @@
   "author": "happen-zhang",
   "dependencies": {
     "express": "3.4.0",
-    "ejs": "0.8.4"
+    "ejs": "0.8.4",
+    "request": "2.33.0",
+    "feedparser": "0.16.6",
+    "iconv": "2.0.7"
   },
   "license": "MIT"
 }
