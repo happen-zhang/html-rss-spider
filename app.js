@@ -11,6 +11,7 @@ var rssSiteConfig = require('./config/rss_site_config.json');
 
 var postService = require('./service/post');
 var db = require('./models/db');
+var routes = require('./routes');
 
 var app = express();
 var staticPath = path.join(__dirname, 'public');
@@ -41,6 +42,9 @@ if ('development' === app.get('env')) {
     });
   }, rssSiteConfig.ttl * 1000 * 60);
 })();
+
+// 路由
+routes.handle(app);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Server listening on port ' + app.get('port'));
