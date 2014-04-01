@@ -1,0 +1,36 @@
+{
+  "ttl": 1440,
+  "sites":
+  [
+    {
+      "from": "TechWeb",
+      "contentTag": "#artibody",
+      "removeTag": ["script",".wenzilian"],
+      "channels":
+      [
+        {
+          "title": "每日热点推荐",
+          "link": "http://www.techweb.com.cn/rss/hotnews.xml",
+          "typeId": 1,
+          "isWork": false
+        },
+        {
+          "title": "要闻",
+          "link": "http://www.techweb.com.cn/rss/focus.xml",
+          "typeId": 2
+        },
+        {
+          "title": "移动互联",
+          "link": "http://www.techweb.com.cn/rss/mi.xml",
+          "typeId": 3,
+          "contentTag": "#endText"
+        },
+        {
+          "title": "人物",
+          "link": "http://www.techweb.com.cn/rss/people.xml",
+          "typeId": 4
+        }
+      ]
+    }
+  ]
+}
