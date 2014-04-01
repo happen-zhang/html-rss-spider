@@ -7,7 +7,9 @@ var http = require('http');
 var path = require('path');
 
 var config = require('./config/config.json');
+var rssSiteConfig = require('./config/rss_site_config.json');
 
+var postService = require('./service/post');
 var db = require('./models/db');
 
 var app = express();
@@ -26,6 +28,19 @@ app.use(express.logger('dev'));
 if ('development' === app.get('env')) {
   app.use(express.errorHandler());
 }
+
+// 每隔ttl分钟爬取一次
+(function schedule() {
+  setTimeout(function() {
+    postService.spiderRss(function(err) {
+      if (err) {
+      	console.log(err);
+      }
+
+      schedule();
+    });
+  }, rssSiteConfig.ttl * 1000 * 60);
+})();
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Server listening on port ' + app.get('port'));
