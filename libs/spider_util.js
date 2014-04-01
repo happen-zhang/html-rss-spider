@@ -23,6 +23,11 @@ var reqOptions = {
   pool: false
 };
 
+// feedparser选项
+var feedParserOptions = {
+  'addmeta': false
+};
+
 /**
  * 爬取rss页面
  * @param  {String}        url 需要爬取的rss页面的url  
@@ -30,7 +35,7 @@ var reqOptions = {
  */
 function spiderRss(url, callback) {
   var req = request(url, reqOptions);
-  var feedParser = new FeedParser();
+  var feedParser = new FeedParser(feedParserOptions);
   var iconv = null;
   var items = null;
   var charset = null;
