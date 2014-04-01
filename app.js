@@ -8,6 +8,8 @@ var path = require('path');
 
 var config = require('./config/config.json');
 
+var db = require('./models/db');
+
 var app = express();
 var staticPath = path.join(__dirname, 'public');
 var faviconPath = staticPath + '/icon.png';
