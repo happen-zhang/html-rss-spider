@@ -6,6 +6,7 @@ var request = require('request');
 var FeedParser = require('feedparser');
 var Iconv = require('iconv').Iconv;
 var BufferHelper = require('bufferhelper');
+var cheerio = require('cheerio');
 
 var CHARSET = 'utf-8';
 var TIMEOUT = 10 * 1000;
@@ -133,6 +134,67 @@ function spiderHtml(url, callback) {
 }
 
 /**
+ * 爬取html页面中的指定tag中的内容，并且支持删除tag
+ * @param  {String} url     需要爬取的url
+ * @param  {String} htmlTag 需要得到内容对应的html tag
+ * @param  {Array} rmTag   需要删除的tag
+ */
+function spiderContent(url, htmlTag, rmTag, callback) {
+  spiderHtml(url, function(err, html) {
+    var $ = null;
+    var img = null;
+    var content = null;
+    var titlePic = null;
+
+    if (err) {
+      return callback(err);
+    }
+
+    content = getHtmlTagContent(html, htmlTag, rmTag);
+    img = getFirstImg(content);
+
+    // 内容和标题图片
+    callback(null, getHtmlTagContent(html, htmlTag, rmTag), img);
+  });
+}
+
+/**
+ * 得到页面中指定<Tag>的区域内容
+ * @param  {String}   html     html内容
+ * @param  {String}   htmlTag  需要截取的html tag
+ * @param  {Array}    rmTag    需要移除的html tag
+ * @return {String}
+ */
+function getHtmlTagContent(html, htmlTag, rmTags) {
+  var $ = cheerio.load(html);
+
+  if (Array.isArray(rmTags)) {
+    rmTags.forEach(function(tag) {
+      $(tag).remove();
+    });
+  }
+
+  return $(htmlTag).html();
+}
+
+/**
+ * 得到内容中的第一个img
+ * @param  {String} content 包含img的内容
+ * @return {String}
+ */
+function getFirstImg(content) {
+  var $ = cheerio.load(content);
+  var img = $('img')[0];
+  var src = null;
+
+  if (img) {
+    src = $(img).attr('src');
+  }
+
+  return src;
+}
+
+/**
  * 从header中得到键值对象
  * @param  {String} src 需要解析的header
  * @return {Object}
@@ -198,3 +260,4 @@ function isUTF8(charset) {
 
 exports.spiderRss = spiderRss;
 exports.spiderHtml = spiderHtml;
+exports.spiderContent = spiderContent;
