@@ -5,6 +5,7 @@
 var request = require('request');
 var FeedParser = require('feedparser');
 var Iconv = require('iconv').Iconv;
+var BufferHelper = require('bufferhelper');
 
 var CHARSET = 'utf-8';
 var TIMEOUT = 10 * 1000;
@@ -85,6 +86,53 @@ function spiderRss(url, callback) {
 }
 
 /**
+ * 爬取html页面
+ * @param  {String}          url 需要爬取的rss页面的url
+ * @param  {Function}   callback 回调函数 
+ */
+function spiderHtml(url, callback) {
+  var req = request(url, reqOptions);
+
+  req.on('error', function(err) {
+    if (err) {
+      callback(err);
+    }
+  });
+  req.on('response', function(res) {
+    var bufferHelper = new BufferHelper();
+    var iconv = null;
+    var charset = getCharset(res.headers['content-type'] || '');
+    var result = null;
+
+    res.on('data', function(chunk) {
+      bufferHelper.concat(chunk);
+    });
+    res.on('end', function() {
+      if (charset && !isUTF8(charset)) {
+        try {
+          if (!iconv) {
+            // 设置编码
+            iconv = new Iconv(charset, CHARSET);
+            iconv.on('error', function(err) {
+              return callback(err);
+            });
+          }
+
+          // 转换成对应的编码
+          result = iconv.convert(bufferHelper.toBuffer()).toString();
+        } catch(err) {
+          this.emit('error', err);
+        }
+      } else {
+        result = bufferHelper.toString();
+      }
+
+      callback(null, result);
+    });
+  });
+}
+
+/**
  * 从header中得到键值对象
  * @param  {String} src 需要解析的header
  * @return {Object}
@@ -110,8 +158,43 @@ function getParams(src) {
  * @param  {String} contentType 需要解析的content-type内容
  * @return {String}
  */
-function getCharset(contentType) {
+function getCharsetFromContentType(contentType) {
   return getParams(contentType).charset;
 }
 
+/**
+ * 解析meta中的charset
+ * @param  {String} html 需要解析的html
+ * @return {String}
+ */
+function getCharsetFromMeta(html) {
+  var matched = html.match(/<meta.+?charset=([-\w]+)/i);
+  return matched[1];
+}
+
+/**
+ * 得到charset
+ * @param  {String} contentType
+ * @param  {String} html
+ * @return {String}
+ */
+function getCharset(contentType, html) {
+  var charset = getCharsetFromContentType(contentType);
+  if (!charset && html) {
+    return getChartsetFromMeta(html);
+  }
+
+  return charset;
+}
+
+/**
+ * 是否utf8
+ * @param  {String}  charset
+ * @return {Boolean}
+ */
+function isUTF8(charset) {
+  return /utf-*8/i.test(charset);
+}
+
 exports.spiderRss = spiderRss;
+exports.spiderHtml = spiderHtml;
