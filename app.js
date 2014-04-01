@@ -34,7 +34,7 @@ if ('development' === app.get('env')) {
   setTimeout(function() {
     postService.spiderRss(function(err) {
       if (err) {
-      	console.log(err);
+        console.log(err);
       }
 
       schedule();
