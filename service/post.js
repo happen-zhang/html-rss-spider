@@ -38,6 +38,14 @@ function spiderRss(callback) {
               return callback(err);
             }
 
+            if (!titlePic) {
+              titlePic = '/icon.png';
+            }
+
+            if (!content) {
+              content = '';
+            }
+
             // 保存到数据库中b
             new Post({
               link: item.link,
