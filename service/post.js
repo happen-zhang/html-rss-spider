@@ -17,7 +17,7 @@ function spiderRss(callback) {
   sites.forEach(function(site) {
     site.channels.forEach(function(channel) {
       // 是否爬取
-      if ('false' === channel.isWork) {
+      if (false === channel.isWork) {
         return ;
       }
 
@@ -30,6 +30,7 @@ function spiderRss(callback) {
         // 爬取每条item中的link
         items.forEach(function(item) {
           spiderUtil.spiderContent(item.link,
+                                   site.charset,
                                    site.contentTag,
                                    site.removeTag,
                                    function(err, content, titlePic) {
@@ -45,9 +46,12 @@ function spiderRss(callback) {
               content: content,
               description: item.description,
               pubDate: item.pubDate,
+              source: site.from,
               typeId: channel.typeId
-            }).save(function(err) {
-              callback(err);
+            }).save(function(err, post) {
+              if (err) {
+                return callback(err);
+              }
             });
 
             callback(null, ++rows);
