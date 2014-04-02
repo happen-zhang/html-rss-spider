@@ -35,6 +35,7 @@ if ('development' === app.get('env')) {
 // 每隔ttl分钟爬取一次
 (function schedule() {
   setTimeout(function() {
+    console.log('Begin spider...');
     postService.spiderRss(function(err) {
       if (err) {
         console.log(err);

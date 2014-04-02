@@ -29,7 +29,6 @@ function spiderRss(callback) {
 
       // 开始爬取
       spiderUtil.spiderRss(channel.link, channel.rows, function(err, items) {
-        console.log(items.length);
         if (err) {
           return callback(err);
         }
