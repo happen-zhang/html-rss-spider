@@ -3,32 +3,22 @@
   "sites":
   [
     {
-      "from": "TechWeb",
-      "contentTag": "#artibody",
-      "removeTag": ["script",".wenzilian"],
+      "from": "腾讯新闻",
+      "contentTag": "#Cnt-Main-Article-QQ",
+      "removeTag": [],
+      "charset": "GBK",
       "channels":
       [
         {
-          "title": "每日热点推荐",
-          "link": "http://www.techweb.com.cn/rss/hotnews.xml",
+          "title": "IT业界",
+          "link": "http://tech.qq.com/web/it/telerss.xml",
           "typeId": 1,
           "isWork": false
         },
         {
-          "title": "要闻",
-          "link": "http://www.techweb.com.cn/rss/focus.xml",
+          "title": "互联网",
+          "link": "http://tech.qq.com/web/webnews/rss_11.xml",
           "typeId": 2
-        },
-        {
-          "title": "移动互联",
-          "link": "http://www.techweb.com.cn/rss/mi.xml",
-          "typeId": 3,
-          "contentTag": "#endText"
-        },
-        {
-          "title": "人物",
-          "link": "http://www.techweb.com.cn/rss/people.xml",
-          "typeId": 4
         }
       ]
     }
