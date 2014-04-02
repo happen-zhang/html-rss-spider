@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content='text/html;charset=utf-8'>
-  <title>大学生组团体验“极限生存” 16人分5个面包(图)</title>
+  <title><%= post.title %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/skeleton.css">
@@ -14,10 +14,10 @@
 <body>
 
 <div class="container">
-    <h3 class="column twelve">大学生组团体验“极限生存” 16人分5个面包(图)</h3>
-    <div class="column twelve">
-        大学生组团体验“极限生存” 16人分5个面包(图)大学生组团体验“极限生存” 16人分5个面包(图)
-    </div>
+  <h3 class="column twelve"><%= post.title %></h3>
+  <div class="column twelve">
+    <%- post.content %>
+  </div>
 </div>
 
 </body>

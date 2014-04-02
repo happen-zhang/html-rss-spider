@@ -41,3 +41,19 @@ exports.index = function(req, res) {
     res.render('index', { 'channelList': channelList });
   };
 };
+
+exports.show = function(req, res) {
+  Post.findById(req.params.id, function(err, post) {
+    if (err) {
+      res.status(500);
+      return res.send('System error!');
+    }
+
+    if (null == post) {
+      res.status(404);
+      return res.send('Not Found!');
+    }
+
+    res.render('post', { post: post });
+  });
+}
