@@ -18,21 +18,21 @@
       ]
     },
     {
-      "from": "网易新闻",
-      "contentTag": "#endText",
-      "removeTag": ["iframe"],
-      "charset": "GBK",
+      "from": "凤凰资讯",
+      "contentTag": "#artical",
+      "removeTag": ["#artical_sth2", "#artical_sth04", ".box02"],
+      "charset": "UTF-8",
       "channels":
       [
         {
-          "title": "头条新闻",
-          "link": "http://news.163.com/special/00011K6L/rss_newstop.xml",
+          "title": "军事频道",
+          "link": "http://news.ifeng.com/mil/rss/index.xml",
           "typeId": 2,
           "isWork": false
         },
         {
-          "title": "娱乐头条",
-          "link": "http://ent.163.com/special/00031K7Q/rss_toutiao.xml",
+          "title": "社会新闻",
+          "link": "http://news.ifeng.com/rss/society.xml",
           "typeId": 3,
           "rows": 5
         }
