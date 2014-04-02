@@ -7,6 +7,7 @@ var FeedParser = require('feedparser');
 var Iconv = require('iconv').Iconv;
 var BufferHelper = require('bufferhelper');
 var cheerio = require('cheerio');
+var iconv = require('iconv-lite');
 
 var CHARSET = 'utf-8';
 var TIMEOUT = 10 * 1000;
@@ -46,7 +47,7 @@ function spiderRss(url, callback) {
     }
   });
   req.on('response', function(res) {
-  	var stream = this;
+    var stream = this;
 
     if (200 != res.statusCode) {
       // 请求失败
@@ -55,11 +56,15 @@ function spiderRss(url, callback) {
 
     // 转换charset
     charset = getCharset(res.headers['content-type'] || '');
-    if (!iconv && charset && !/utf-*8/i.test(charset)) {
+    if (!iconv && charset && !isUTF8()) {
       try {
-      	// 转换成对应的编码
+        // 转换成对应的编码
         iconv = new Iconv(charset, CHARSET);
-        iconv.on('error', done);
+        iconv.on('error', function(err) {
+          if (err) {
+            return callback(err);
+          }
+        });
         stream = this.pipe(iconv);
       } catch(err) {
         this.emit('error', err);
@@ -94,9 +99,10 @@ function spiderRss(url, callback) {
 /**
  * 爬取html页面
  * @param  {String}          url 需要爬取的rss页面的url
- * @param  {Function}   callback 回调函数 
+ * @param  {String}      charset 页面的charset
+ * @param  {Function}   callback 回调函数
  */
-function spiderHtml(url, callback) {
+function spiderHtml(url, charset, callback) {
   var req = request(url, reqOptions);
 
   req.on('error', function(err) {
@@ -106,33 +112,13 @@ function spiderHtml(url, callback) {
   });
   req.on('response', function(res) {
     var bufferHelper = new BufferHelper();
-    var iconv = null;
-    var charset = getCharset(res.headers['content-type'] || '');
     var result = null;
 
     res.on('data', function(chunk) {
       bufferHelper.concat(chunk);
     });
     res.on('end', function() {
-      if (charset && !isUTF8(charset)) {
-        try {
-          if (!iconv) {
-            // 设置编码
-            iconv = new Iconv(charset, CHARSET);
-            iconv.on('error', function(err) {
-              return callback(err);
-            });
-          }
-
-          // 转换成对应的编码
-          result = iconv.convert(bufferHelper.toBuffer()).toString();
-        } catch(err) {
-          this.emit('error', err);
-        }
-      } else {
-        result = bufferHelper.toString();
-      }
-
+      result = iconv.decode(bufferHelper.toBuffer(), charset);
       callback(null, result);
     });
   });
@@ -144,8 +130,8 @@ function spiderHtml(url, callback) {
  * @param  {String} htmlTag 需要得到内容对应的html tag
  * @param  {Array} rmTag   需要删除的tag
  */
-function spiderContent(url, htmlTag, rmTag, callback) {
-  spiderHtml(url, function(err, html) {
+function spiderContent(url, charset, htmlTag, rmTag, callback) {
+  spiderHtml(url, charset, function(err, html) {
     var $ = null;
     var img = null;
     var content = null;
