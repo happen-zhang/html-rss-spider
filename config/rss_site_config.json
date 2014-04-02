@@ -13,12 +13,58 @@
           "title": "IT业界",
           "link": "http://tech.qq.com/web/it/telerss.xml",
           "typeId": 1,
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "from": "网易新闻",
+      "contentTag": "#endText",
+      "removeTag": ["iframe"],
+      "charset": "GBK",
+      "channels":
+      [
+        {
+          "title": "头条新闻",
+          "link": "http://news.163.com/special/00011K6L/rss_newstop.xml",
+          "typeId": 2,
           "isWork": false
         },
         {
-          "title": "互联网",
-          "link": "http://tech.qq.com/web/webnews/rss_11.xml",
-          "typeId": 2
+          "title": "娱乐头条",
+          "link": "http://ent.163.com/special/00031K7Q/rss_toutiao.xml",
+          "typeId": 3,
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "from": "csdn",
+      "contentTag": "#detailWord",
+      "removeTag": [],
+      "charset": "GBK",
+      "channels":
+      [
+        {
+          "title": "Ruby动态",
+          "link": "http://articles.csdn.net/api/rss.php?tid=1351",
+          "typeId": 4,
+          "rows": 5
+        }
+      ]
+    },
+    {
+      "from": "新浪博客",
+      "contentTag": "#sina_keyword_ad_area2",
+      "removeTag": [],
+      "charset": "UTF-8",
+      "channels":
+      [
+        {
+          "title": "文化",
+          "link": "http://rss.sina.com.cn/blog/index/cul.xml",
+          "typeId": 5,
+          "rows": 5
         }
       ]
     }
