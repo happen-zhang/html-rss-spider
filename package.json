@@ -18,7 +18,10 @@
     "iconv": "2.0.7",
     "bufferhelper": "0.2.0",
     "cheerio": "0.13.1",
-    "mongoose": "3.8.8"
+    "mongoose": "3.8.8",
+    "async": "0.2.10",
+    "iconv-lite": "0.2.11",
+    "moment": "2.5.1"
   },
   "license": "MIT"
 }

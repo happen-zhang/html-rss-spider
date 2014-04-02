@@ -2,8 +2,42 @@
  * routes/post.js
  */
 
+var async = require('async');
+
+var sites = require('../config/rss_site_config.json').sites;
+
 var Post = require('../models/post');
 
+var QUEUE_SIZE = 5;
+
 exports.index = function(req, res) {
-  res.render('index');
+  var channelList = [];
+  var fields = '_id titlePic link title pubDate source';
+
+  // 任务队列
+  var queue = async.queue(function(channel, callback) {
+    var result = {};
+    Post.findByTypeId(channel.typeId, 0, 5, fields, function(err, posts) {
+      if (err) {
+        return console.log(err);
+      }
+
+      result.typeName = channel.title;
+      result.posts = posts;
+      callback(result);
+    });
+  }, QUEUE_SIZE);
+
+  sites.forEach(function(site) {
+    site.channels.forEach(function(channel) {
+      queue.push(channel, function(result) {
+        channelList.push(result);
+      });
+    });
+  });
+
+  // 任务队列执行完成
+  queue.drain = function() {
+    res.render('index', { 'channelList': channelList });
+  };
 };

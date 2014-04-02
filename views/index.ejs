@@ -27,26 +27,18 @@
     border-bottom: 1px solid #efefef;
     padding: 10px 0;
   }
-  .news_list ul li a{
-    vertical-align: top;
-    height:auto;display:inline;
-  }
   .news_list ul li img{
     width:70px;
     height:52px;
     padding-right: 10px;
     float: left;
   }
-  .news_list ul li .news_item{
-    width: 70%;
-    margin-top: 0px;
-    position: relative;
-    float: left;
+  .news_list ul li .meta {
+    padding-left: 10px;
+    overflow: hidden;
   }
   .news_list ul li p{
-    line-height: 16px;
     margin-left: 3px;
-    height: 40px;
     overflow: hidden;
   }
   </style>
@@ -54,15 +46,25 @@
 <body>
 
 <div class="container">
-  <h4 class="columns twelve typeName">新闻分类</h4>
+  <% channelList.forEach(function(channel) { %>
+  <h4 class="columns twelve typeName"><%= channel.typeName %></h4>
   <div class="columns twelve news_list">
     <ul>
-      <li class="">
-        <a href="" class="columns twelve" target="_blank"><img src="http://img1.cache.netease.com/catchpic/1/15/15BE6CC5384908DD7EE0F4B64B66513D.jpg"/><div class="news_item">大学生组团体验“极限生存” 16人分5个面包(图)<p></p></div></a>
+      <% channel.posts.forEach(function(post) { %>
+      <li>
+        <img src="<%= post.titlePic %>" />
+        <div class="info">
+          <p><a href="/post/<%= post._id %>" class="columns twelve" target="_blank"><%= post.title %></a></p>
+          <div class="meta">
+            <span>发布时间：<%= locals.moment(post.pubDate).format("YYYY-MM-DD") %></span> <span style="margin-left: 30px;">来源：<a href="<%= post.link %>" target="_blank"><%= post.source %></a></span>
+          </div>
+        </div>
       </li>
+      <% }); %>
     </ul>
   </div>
   <hr>
+  <% }); %>
 </div>
 
 </body>

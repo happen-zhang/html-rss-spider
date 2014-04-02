@@ -27,4 +27,23 @@ var PostSchema = new mongoose.Schema({
   typeId: Number,
 });
 
+/**
+ * 按typeId得到post
+ * @param  {int}   tid      [description]
+ * @param  {int}   skip     [description]
+ * @param  {int}   limit    [description]
+ * @param  {String}   fields   [description]
+ */
+PostSchema.static('findByTypeId', function(tid, skip, limit, fields,callback) {
+  var options = {
+    skip: skip,
+    limit: limit,
+    sort: {
+      _id: -1
+    }
+  };
+
+  return this.find({ typeId: tid }, fields, options, callback);
+});
+
 module.exports = mongoose.model('Post', PostSchema);
