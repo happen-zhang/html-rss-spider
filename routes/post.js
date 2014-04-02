@@ -30,9 +30,11 @@ exports.index = function(req, res) {
 
   sites.forEach(function(site) {
     site.channels.forEach(function(channel) {
-      queue.push(channel, function(result) {
-        channelList.push(result);
-      });
+      if (false != channel.isWork) {
+        queue.push(channel, function(result) {
+          channelList.push(result);
+        });
+      }
     });
   });
 
