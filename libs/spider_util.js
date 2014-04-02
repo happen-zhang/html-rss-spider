@@ -31,10 +31,11 @@ var feedParserOptions = {
 
 /**
  * 爬取rss页面
- * @param  {String}        url 需要爬取的rss页面的url  
+ * @param  {String}        url 需要爬取的rss页面的url
+ * @param  {Int}          rows 需要爬取的rss条数
  * @param  {Function} callback 回调函数
  */
-function spiderRss(url, callback) {
+function spiderRss(url, rows, callback) {
   var req = request(url, reqOptions);
   var feedParser = new FeedParser(feedParserOptions);
   var iconv = null;
@@ -90,6 +91,12 @@ function spiderRss(url, callback) {
   feedParser.on('end', function(err) {
     if (err) {
       return callback(err);
+    }
+
+    console.log(rows);
+
+    if (rows && !isNaN(parseInt(rows))) {
+      items = items.slice(0, rows);
     }
 
     callback(null, items);

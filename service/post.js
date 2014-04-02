@@ -16,13 +16,20 @@ function spiderRss(callback) {
 
   sites.forEach(function(site) {
     site.channels.forEach(function(channel) {
+      var rows = 0;
+
       // 是否爬取
       if (false === channel.isWork) {
         return ;
       }
 
+      if (channel.rows && isNaN(parseInt(channel.rows))) {
+        rows = channel.rows;
+      }
+
       // 开始爬取
-      spiderUtil.spiderRss(channel.link, function(err, items) {
+      spiderUtil.spiderRss(channel.link, channel.rows, function(err, items) {
+        console.log(items.length);
         if (err) {
           return callback(err);
         }
