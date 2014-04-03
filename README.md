@@ -2,6 +2,8 @@
 
 通过爬取站点的rss文档，从而爬取到站点中指定的内容。
 
+演示地址：[html-rss-spider](http://112.124.35.12:3001)
+
 ## 安装 & 运行 ##
 
 ### 克隆项目到本地 ###
@@ -31,6 +33,10 @@ node app.js
 ```
 config/config.json
 ```
+
+### 超时时间 ###
+
+`libs/spider_util.js`中`TIMEOUT`常量，默认为10秒。
 
 ### rss爬取站点 ###
 
