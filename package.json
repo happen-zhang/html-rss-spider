@@ -23,5 +23,9 @@
     "iconv-lite": "0.2.11",
     "moment": "2.5.1"
   },
+  "devDependencies": {
+    "mocha": "1.17.1",
+    "chai": "1.9.0"
+  },
   "license": "MIT"
 }
