@@ -2,7 +2,15 @@
  * test/test.js
  */
 
-var spiderUtil = require('../libs/spider_util');
+var rewire = require('rewire');
+var spiderUtil = rewire('../libs/spider_util');
+
+var getHtmlTagContent = spiderUtil.__get__('getHtmlTagContent');
+var getFirstImg = spiderUtil.__get__('getFirstImg');
+var getParams = spiderUtil.__get__('getParams');
+var getCharsetFromContentType =spiderUtil.__get__('getCharsetFromContentType');
+var isUTF8 = spiderUtil.__get__('isUTF8');
+
 var should = require('chai').should();
 
 describe('spider_util', function() {
@@ -27,33 +35,32 @@ describe('spider_util', function() {
         var tagetTag = '.content';
         var rmTags = ['.other'];
 
-        spiderUtil.getHtmlTagContent(html, tagetTag, rmTags)
-                  .should.equal(result);
+        getHtmlTagContent(html, tagetTag, rmTags).should.equal(result);
       });
 
       it('getFirstImg', function() {
-        spiderUtil.getFirstImg(html).should.equal('pathtoimg');
-        should.not.exist(spiderUtil.getFirstImg('<p>noimg</p>'));
+        getFirstImg(html).should.equal('pathtoimg');
+        should.not.exist(getFirstImg('<p>noimg</p>'));
       });
   });
 
   it('getParams', function() {
     var ct = 'content-type: text/html; charset=utf8'
-    var parts = spiderUtil.getParams(ct);
+    var parts = getParams(ct);
 
     parts.hasOwnProperty('charset').should.true;
     parts.charset.should.equal('utf8');
   });
 
   it('getCharsetFromContentType', function() {
-  	var ct = 'content-type: text/html; charset=utf8'
-    spiderUtil.getCharsetFromContentType(ct).should.equal('utf8');
+    var ct = 'content-type: text/html; charset=utf8'
+    getCharsetFromContentType(ct).should.equal('utf8');
   });
 
   it('isUTF8', function() {
-  	spiderUtil.isUTF8('utf8').should.true;
-  	spiderUtil.isUTF8('UTF8').should.true;
-    spiderUtil.isUTF8('utf-8').should.true;
-    spiderUtil.isUTF8('utf-  8').should.false;
+    isUTF8('utf8').should.true;
+    isUTF8('UTF8').should.true;
+    isUTF8('utf-8').should.true;
+    isUTF8('utf-  8').should.false;
   });
 });
