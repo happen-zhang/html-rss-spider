@@ -40,9 +40,9 @@ if ('development' === app.get('env')) {
       if (err) {
         console.log(err);
       }
-
-      schedule();
     });
+
+    schedule();
   }, rssSiteConfig.ttl * 1000 * 60);
 })();
 
